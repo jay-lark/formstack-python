@@ -1,0 +1,2 @@
+class FormstackException(Exception):
+    pass
