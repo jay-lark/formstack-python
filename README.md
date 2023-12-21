@@ -10,7 +10,6 @@ import os
 
 oauth_token = os.environ["oauth_token"]
 
-#list the forms in your account
 fs= FormsClient(token = oauth_token)
 
 form_list = fs.get("form.json")
