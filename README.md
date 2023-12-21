@@ -2,7 +2,7 @@
 
 Python Wrapper for Formstack API
 
-Include this in repository in your project and then list all your forms like this
+Include this repository in your project and then list all your forms like this
 
 ```
 from forms.rest_adapter import FormsClient
