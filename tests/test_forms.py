@@ -27,4 +27,4 @@ def test_create_get_delete_form():
     assert get_form["id"] == form_create["id"]
     form_delete = fs.delete(f"form/{form_id}")
     assert form_delete["id"] == form_create["id"]
-    assert form_delete["success"] == 1
+    assert form_delete["success"] == "1"
