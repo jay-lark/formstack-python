@@ -22,3 +22,6 @@ jobs:
       run: |
         pip install pytest pytest-cov flake8
         pytest tests/test_forms.py
+      env:
+        OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }} 
+        API_URL: ${{ secrets.API_URL }} 
