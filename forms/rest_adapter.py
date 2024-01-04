@@ -56,3 +56,15 @@ class FormsClient:
             return data_out
         self._logger.error(msg=log_line)
         raise Exception(f"{response.status_code}: {response.reason}")
+    
+    def get_form(self, id: int = '', detail: str = "basic", params: Dict = None):
+        urlpath = ''
+        if id != '':
+            urlpath = "/" + str(id) + "/" + detail
+        return self.get(endpoint=f"form{urlpath}.json", params=params)
+    
+    def create_form(self, params: Dict = None, data: Dict = None):
+        return self.post(endpoint="form.json", params=params, data=data)
+    
+    def delete_form(self, id: int = ''):
+        return self.delete(endpoint=f"form/{id}.json")
