@@ -12,8 +12,12 @@ oauth_token = os.environ["oauth_token"]
 
 fs= FormsClient(token = oauth_token)
 
-form_list = fs.get("form.json")
+form_list = fs.get_form()
 print(form_list)
+
+#get details for specific form
+form_details = fs.get_form(id = 1234)
+print(form_details)
 ```
 
 or create a form
@@ -24,7 +28,7 @@ import os
 
 oauth_token = os.environ["oauth_token"]
 
-params = {
+form_fields= {
     "db": False,
     "label_position": "top",
     "submit_button_title": "Submit Form",
@@ -35,6 +39,6 @@ params = {
     "name": "this is a test form",
     "num_columns": 2
 }
-form_create = fs.post("form.json", params=params)
+form_create = fs.create_form(data=form_fields)
 
 ```
