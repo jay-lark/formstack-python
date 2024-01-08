@@ -23,6 +23,9 @@ class FormsClient:
     def post(self, endpoint: str, params: Dict = None, data: Dict = None):
         return self._do(http_method='POST', endpoint=endpoint, params=params, data=data)
     
+    def put(self, endpoint: str, params: Dict = None, data: Dict = None):
+        return self._do(http_method='PUT', endpoint=endpoint, params=params, data=data)
+    
     def delete(self, endpoint: str, params: Dict = None, data: Dict = None):
         return self._do(http_method='DELETE', endpoint=endpoint, params=params, data=data)
     
@@ -63,8 +66,38 @@ class FormsClient:
             urlpath = "/" + str(id) + "/" + detail
         return self.get(endpoint=f"form{urlpath}.json", params=params)
     
+    def get_form_submissions(self, id: int = '', params: Dict = None):
+        return self.get(endpoint=f"form/{id}/submission.json", params=params)
+    
     def create_form(self, params: Dict = None, data: Dict = None):
         return self.post(endpoint="form.json", params=params, data=data)
     
     def delete_form(self, id: int = ''):
         return self.delete(endpoint=f"form/{id}.json")
+    
+    def get_folder(self, id: int = '', params: Dict = None):
+        urlpath = ''
+        if id != '':
+            urlpath = "/" + str(id)
+        return self.get(endpoint=f"folder{urlpath}.json", params=params)
+    
+    def create_folder(self, params: Dict = None, data: Dict = None):
+        return self.post(endpoint="folder.json", params=params, data=data)
+    
+    def update_folder(self, params: Dict = None, data: Dict = None):
+        return self.put(endpoint="folder.json", params=params, data=data)
+    
+    def delete_folder(self, id: int = ''):
+        return self.delete(endpoint=f"folder/{id}.json")
+    
+    def get_submission(self, id: int = '', params: Dict = None):
+        return self.get(endpoint=f"submission/{id}.json", params=params)
+    
+    def create_submission(self, params: Dict = None, data: Dict = None):
+        return self.post(endpoint=f"form/{id}/submission.json", params=params, data=data)
+    
+    def update_submission(self, params: Dict = None, data: Dict = None):
+        return self.put(endpoint="submission.json", params=params, data=data)
+    
+    def delete_submission(self, id: int = ''):
+        return self.delete(endpoint=f"submission/{id}.json")
