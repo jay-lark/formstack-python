@@ -1,6 +1,6 @@
 import requests
 import os
-from forms.rest_adapter import FormsClient
+from formstack.forms_api import FormsClient
 
 oauth_token = os.environ["OAUTH_TOKEN"]
 fs = FormsClient(hostname=os.environ["API_URL"], token=oauth_token)
