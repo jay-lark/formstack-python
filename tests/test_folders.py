@@ -1,6 +1,6 @@
 import requests
 import os
-from forms.rest_adapter import FormsClient
+from formstack.forms_api import FormsClient
 import time
 
 

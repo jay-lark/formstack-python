@@ -67,7 +67,7 @@ class FormsClient:
         self,
         http_method: str,
         endpoint: str,
-        enc_password: str,
+        enc_password: str = "",
         params: Dict = None,
         data: Dict = None,
     ):
