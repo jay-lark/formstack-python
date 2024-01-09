@@ -1,7 +1,7 @@
 from formstack.forms_api import FormsClient
 import os
 
-oauth_token = "8746200a68f526c770c745420611784d"
+oauth_token = os.environ["OAUTH_TOKEN"]
 
 fs = FormsClient(hostname="www.formstack.com", token=oauth_token)
 
