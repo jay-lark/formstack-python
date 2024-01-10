@@ -18,7 +18,7 @@ class DocsClient:
         logger: logging.Logger = None,
     ):
         self._logger = logger or logging.getLogger(__name__)
-        self.url = "https://{}/api/".format(hostname)
+        self.url = "https://{}/".format(hostname)
         self._secret = api_secret
         self._key = api_key
         self._ssl_verify = ssl_verify
@@ -111,19 +111,68 @@ class DocsClient:
         raise Exception(f"{response.status_code}: {response.reason}")
 
     # Documents
-    def get_documents(self, id: int = "", detail: str = ""):
+    def get_document_key(self, id: int):
+        doc = self.post(endpoint=f"api/documents/{id}")
+        return doc["key"]
+
+    def get_route_key(self, id: int):
+        route = self.post(endpoint=f"api/routes/{id}")
+        return route["key"]
+
+    def get_document(self, id: int = "", detail: str = ""):
         urlpath = ""
         if id != "":
             urlpath = "/" + str(id)
         if id != "" and detail != "":
             urlpath = "/" + str(id) + "/" + detail
-        return self.get(endpoint=f"documents{urlpath}")
+        return self.get(endpoint=f"api/documents{urlpath}")
 
-    def copy_documents(self, id: int, data: Dict = None):
-        return self.post(endpoint=f"documents/{id}/copy", data=data)
+    def create_document(self, data: Dict = None):
+        return self.put(endpoint=f"api/documents", data=data)
 
-    def delete_documents(self, id: int):
-        return self.delete(endpoint=f"documents/{id}")
+    def update_document(self, id: int, data: Dict = None):
+        return self.put(endpoint=f"api/documents/{id}", data=data)
+
+    def copy_document(self, id: int, data: Dict = None):
+        return self.post(endpoint=f"api/documents/{id}/copy", data=data)
+
+    def delete_document(self, id: int):
+        return self.delete(endpoint=f"api/documents/{id}")
 
     def create_delivery(self, id: int, data: Dict):
-        return self.post(endpoint=f"documents/{id}/deliveries", data=data)
+        return self.post(endpoint=f"api/documents/{id}/deliveries", data=data)
+
+    def merge_document(self, id: int, data: Dict):
+        key = self.get_document_key(id=id)
+        return self.post(endpoint=f"merge/{id}/{key}", data=data)
+
+    def get_data_route(self, id: int = "", detail: str = ""):
+        urlpath = ""
+        if id != "":
+            urlpath = "/" + str(id)
+        return self.get(endpoint=f"api/routes{urlpath}")
+
+    def create_data_route(self, data: Dict = None):
+        return self.post(endpoint=f"api/routes", data=data)
+
+    def update_data_route(self, id: int, data: Dict = None):
+        return self.put(endpoint=f"api/routes/{id}", data=data)
+
+    def merge_data_route(self, id: int, data: Dict = None):
+        key = self.get_route_key(id=id)
+        return self.post(endpoint=f"route/{id}/{key}", data=data)
+
+    def combine_files(self, data: Dict = None):
+        return self.post(endpoint=f"api/tools/combine", data=data)
+
+    def convert_to_pdf(self, data: Dict = None):
+        return self.post(endpoint=f"api/tools/convert_to_pdf", data=data)
+
+    def compress_pdf(self, data: Dict = None):
+        return self.post(endpoint=f"api/tools/compress_pdf", data=data)
+
+    def encrypt_pdf(self, data: Dict = None):
+        return self.post(endpoint=f"api/tools/encrypt_pdf", data=data)
+
+    def split_pdf(self, data: Dict = None):
+        return self.post(endpoint=f"api/tools/split_pdf", data=data)
