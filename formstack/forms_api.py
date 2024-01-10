@@ -106,11 +106,8 @@ class FormsClient:
             raise FormstackException("Bad JSON in response") from e
         # If status_code in 200-299 range, return success Result with data, otherwise raise exception
         is_success = 299 >= response.status_code >= 200
-        log_line = log_line_post.format(
-            is_success, response.status_code, response.reason
-        )
+        log_line = response.status_code
         if is_success:  # OK
-            self._logger.debug(msg=log_line)
             return data_out
         self._logger.error(msg=log_line)
         raise Exception(f"{response.status_code}: {response.reason}")
@@ -118,20 +115,17 @@ class FormsClient:
     # Forms
     def get_form(
         self,
+        params: str = "",
         id: int = "",
-        enc_password: str = "",
-        detail: str = "basic",
-        params: Dict = None,
+        detail: str = "",
     ):
         urlpath = ""
         if id != "":
             urlpath = "/" + str(id) + "/" + detail
         return self.get(
-            endpoint=f"form{urlpath}.json", enc_password=enc_password, params=params
+            endpoint=f"form{urlpath}.json",
+            params=params,
         )
-
-    def get_form_submissions(self, id: int = "", params: Dict = None):
-        return self.get(endpoint=f"form/{id}/submission.json", params=params)
 
     def create_form(self, params: Dict = None, data: Dict = None):
         return self.post(endpoint="form.json", params=params, data=data)
