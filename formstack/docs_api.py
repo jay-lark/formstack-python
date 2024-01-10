@@ -80,7 +80,6 @@ class DocsClient:
             (log_line_pre, "success={}, status_code={}, message={}")
         )
         # Log HTTP params and perform an HTTP request, catching and re-raising any exceptions
-        print(data)
         try:
             self._logger.debug(msg=log_line_pre)
             response = requests.request(
@@ -98,7 +97,7 @@ class DocsClient:
         try:
             data_out = response.json()
         except (ValueError, JSONDecodeError) as e:
-            self._logger.error(msg=log_line_post.format(False, None, e))
+            # self._logger.error(msg=log_line_post.format(False, None, e))
             raise FormstackException("Bad JSON in response") from e
         # If status_code in 200-299 range, return success Result with data, otherwise raise exception
         is_success = 299 >= response.status_code >= 200
