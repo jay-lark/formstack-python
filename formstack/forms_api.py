@@ -1,7 +1,7 @@
 import requests
 import requests.packages
 from typing import List, Dict
-from formstack.exceptions import FormstackException
+from . import exceptions
 from json import JSONDecodeError
 from formstack.models import Result
 import logging
@@ -97,20 +97,20 @@ class FormsClient:
             )
         except requests.exceptions.RequestException as e:
             self._logger.error(msg=(str(e)))
-            raise FormstackException("Reqest failed from e")
+            raise Exception("Reqest failed from e")
         # Deserialize JSON output to Python object, or return failed Result on exception
         try:
             data_out = response.json()
         except (ValueError, JSONDecodeError) as e:
             self._logger.error(msg=log_line_post.format(False, None, e))
-            raise FormstackException("Bad JSON in response") from e
+            # raise Exception("Bad JSON in response") from e
         # If status_code in 200-299 range, return success Result with data, otherwise raise exception
         is_success = 299 >= response.status_code >= 200
         log_line = response.status_code
         if is_success:  # OK
             return data_out
         self._logger.error(msg=log_line)
-        raise Exception(f"{response.status_code}: {response.reason}")
+        return exceptions.detect_http_error(response)
 
     # Forms
     def get_form(
