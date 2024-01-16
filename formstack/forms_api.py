@@ -103,7 +103,7 @@ class FormsClient:
             data_out = response.json()
         except (ValueError, JSONDecodeError) as e:
             self._logger.error(msg=log_line_post.format(False, None, e))
-            # raise Exception("Bad JSON in response") from e
+            raise Exception("Bad JSON in response") from e
         # If status_code in 200-299 range, return success Result with data, otherwise raise exception
         is_success = 299 >= response.status_code >= 200
         log_line = response.status_code
@@ -189,8 +189,12 @@ class FormsClient:
             enc_password=enc_password,
         )
 
-    def create_form_submission(self, id: int = "", data: Dict = ""):
-        return self.post(endpoint=f"form/{id}/submission.json", data=data)
+    def create_form_submission(
+        self, id: int = "", params: Dict = None, data: Dict = ""
+    ):
+        return self.post(
+            endpoint=f"form/{id}/submission.json", params=params, data=data
+        )
 
     # Download
     def download_form_submission(self, id: int, field_id: int):

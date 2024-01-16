@@ -5,6 +5,10 @@ class FormstackException(Exception):
     pass
 
 
+class DocsException(Exception):
+    pass
+
+
 def detect_http_error(response):
     if response.status_code == 401:
         return "Unauthorized - Valid OAuth2 credentials were not supplied"
